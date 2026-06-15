@@ -1,5 +1,6 @@
 import uuid
 from datetime import datetime
+from typing import Optional
 
 from sqlmodel import Field, Relationship, SQLModel
 
@@ -15,7 +16,7 @@ class Message(MessageBase, table=True):
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
     conversation_id: uuid.UUID = Field(foreign_key="conversations.id", index=True)
     created_at: datetime = Field(default_factory=datetime.utcnow, index=True)
-    conversation: "Conversation | None" = Relationship(back_populates="messages")
+    conversation: Optional["Conversation"] = Relationship(back_populates="messages")
 
 
 class MessageCreate(SQLModel):

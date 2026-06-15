@@ -9,12 +9,12 @@ from app.repositories.conversation_repository import ConversationRepository
 router = APIRouter()
 
 
-@router.post("/", response_model=ConversationRead, status_code=201)
+@router.post("", response_model=ConversationRead, status_code=201)
 async def create_conversation(body: ConversationCreate, db: SessionDep):
     return await ConversationRepository(db).create(body.title)
 
 
-@router.get("/", response_model=list[ConversationRead])
+@router.get("", response_model=list[ConversationRead])
 async def list_conversations(
     db: SessionDep,
     limit: int = Query(50, ge=1, le=200),
