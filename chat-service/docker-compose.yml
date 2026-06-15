@@ -8,7 +8,7 @@ services:
       POSTGRES_PASSWORD: chatpass
     volumes: [pgdata:/var/lib/postgresql/data]
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U chatuser"]
+      test: ["CMD-SHELL", "pg_isready -U chatuser -d chatdb"]
       interval: 5s
       timeout: 5s
       retries: 5
