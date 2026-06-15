@@ -24,7 +24,7 @@ Prerequisites: Docker + Docker Compose, an OpenAI API key.
 git clone <repo>
 cd chat-service
 cp .env.example .env          # add your OPENAI_API_KEY
-docker compose up --build
+docker compose up --build -d
 ```
 
 API docs: http://localhost:8000/docs
@@ -46,7 +46,8 @@ API docs: http://localhost:8000/docs
 ```bash
 cd chat-service
 poetry install
-poetry run pytest -m unit -v
+make test        # runs: pytest -m unit -v
+make test-all    # runs all tests including integration
 ```
 
 ## Tech choices
@@ -61,3 +62,5 @@ poetry run pytest -m unit -v
 | **Repository pattern** | Decouples business logic from storage; swap DB without touching service code |
 | **Docker Compose** | One-command reproducible local dev mirroring microservice prod topology |
 | **Alembic** | Schema migrations tracked in git; runs automatically on container startup |
+| **greenlet** | Required by SQLAlchemy async internals for greenlet-based concurrency |
+| **Makefile** | `make test`, `make lint`, `make format` — minimal task runner, no extra deps |
