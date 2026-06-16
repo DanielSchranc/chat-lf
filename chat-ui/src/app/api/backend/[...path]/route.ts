@@ -1,13 +1,17 @@
 import { type NextRequest } from "next/server";
 
-const SERVICE_URL = process.env.CHAT_SERVICE_URL ?? "http://localhost:8000";
+const API_URL = process.env.CHAT_API_URL ?? "";
+
+if (!API_URL) {
+  throw new Error("CHAT_API_URL env variable is not set");
+}
 
 async function proxy(
   req: NextRequest,
   { params }: { params: Promise<{ path: string[] }> },
 ) {
   const { path } = await params;
-  const url = `${SERVICE_URL}/api/v1/${path.join("/")}${req.nextUrl.search}`;
+  const url = `${API_URL}/api/v1/${path.join("/")}${req.nextUrl.search}`;
   const res = await fetch(url, {
     method: req.method,
     headers: { "Content-Type": "application/json" },
@@ -15,6 +19,7 @@ async function proxy(
     // @ts-expect-error duplex required for streaming request body
     duplex: "half",
   });
+
   return new Response(res.body, {
     status: res.status,
     headers: {
