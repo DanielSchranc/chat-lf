@@ -1,20 +1,23 @@
 "use client";
 
 import { useState } from "react";
-import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
 
-interface ChatComposerProps {
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+
+interface MessageInputProps {
   onSend: (content: string) => void;
   disabled: boolean;
 }
 
-export function ChatComposer({ onSend, disabled }: ChatComposerProps) {
+export function MessageInput({ onSend, disabled }: MessageInputProps) {
   const [value, setValue] = useState("");
 
   const submit = () => {
     const trimmed = value.trim();
-    if (!trimmed || disabled) return;
+    if (!trimmed || disabled) {
+      return;
+    }
     onSend(trimmed);
     setValue("");
   };
@@ -38,7 +41,10 @@ export function ChatComposer({ onSend, disabled }: ChatComposerProps) {
           rows={1}
           className="resize-none"
         />
-        <Button onClick={submit} disabled={disabled || !value.trim()}>
+        <Button
+          onClick={submit}
+          disabled={disabled || !value.trim()}
+        >
           Send
         </Button>
       </div>
